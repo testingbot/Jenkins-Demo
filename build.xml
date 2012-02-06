@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<project name="Hudson Demo" default="run">
+    <target name="serve" depends="package">
+        <java jar="jenkins-demo.jar" fork="true" spawn="true"/>
+    </target>
+    <target name="test" depends="serve">
+        <javac srcdir="test" destdir="test">
+            <classpath path="lib/selenium-java-2.18.0.jar"/>
+            <classpath path="lib/junit-4.10.jar"/>
+        </javac>
+        <junit>
+            <classpath>
+                <pathelement location="lib/junit-4.10.jar"/>
+                <pathelement path="lib/selenium-java-2.18.0.jar"/>
+                <pathelement path="test"/>
+            </classpath>
+            <test name="SmokeTest" todir="test-reports">
+                <formatter type="xml"/>
+            </test>
+        </junit>
+    </target>
+</project>

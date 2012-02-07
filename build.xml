@@ -15,14 +15,14 @@
     <target name="test" depends="serve">
         <javac srcdir="test" destdir="test">
 					<classpath path="lib/TestingBot-0.0.1.jar"/>
-          <classpath path="lib/selenium-java-2.18.0.jar"/>
+          <classpath path="lib/selenium-java-client-driver.jar"/>
           <classpath path="lib/junit-4.10.jar"/>
         </javac>
         <junit>
             <classpath>
 					  	<pathelement path="lib/TestingBot-0.0.1.jar"/>
               <pathelement location="lib/junit-4.10.jar"/>
-              <pathelement path="lib/selenium-java-2.18.0.jar"/>
+              <pathelement path="lib/selenium-java-client-driver.jar"/>
               <pathelement path="test"/>
             </classpath>
             <test name="SmokeTest" todir="test-reports">

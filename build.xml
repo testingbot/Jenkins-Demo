@@ -1,18 +1,29 @@
 <?xml version="1.0"?>
 <project name="Hudson Demo" default="run">
+    <target name="package">
+        <jar destfile="hudson-demo.jar">
+            <fileset dir="build"/>
+            <manifest>
+                <attribute name="Main-Class"
+                    value="HudsonDemo"/>
+            </manifest>
+        </jar>
+    </target>
     <target name="serve" depends="package">
-        <java jar="jenkins-demo.jar" fork="true" spawn="true"/>
+        <java jar="hudson-demo.jar" fork="true" spawn="true"/>
     </target>
     <target name="test" depends="serve">
         <javac srcdir="test" destdir="test">
-            <classpath path="lib/selenium-java-2.18.0.jar"/>
-            <classpath path="lib/junit-4.10.jar"/>
+					<classpath path="lib/TestingBot-0.0.1.jar"/>
+          <classpath path="lib/selenium-java-2.18.0.jar"/>
+          <classpath path="lib/junit-4.10.jar"/>
         </javac>
         <junit>
             <classpath>
-                <pathelement location="lib/junit-4.10.jar"/>
-                <pathelement path="lib/selenium-java-2.18.0.jar"/>
-                <pathelement path="test"/>
+					  	<pathelement path="lib/TestingBot-0.0.1.jar"/>
+              <pathelement location="lib/junit-4.10.jar"/>
+              <pathelement path="lib/selenium-java-2.18.0.jar"/>
+              <pathelement path="test"/>
             </classpath>
             <test name="SmokeTest" todir="test-reports">
                 <formatter type="xml"/>

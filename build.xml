@@ -14,7 +14,15 @@
     </target>
 
 		<target name="test" depends="junit">
-			<java classname="com.testingbot.TestingBotTestRunner">
+			<java classpath="lib" fork="true" classname="com.testingbot.TestingBotTestRunner">
+				
+					<classpath>
+					      <path location="lib/TestingBot-0.0.1.jar"/>
+					      <path location="lib/junit-4.10.jar"/>
+	              <path location="lib/selenium-java-client-driver.jar"/>
+	              <path location="test"/>
+					    </classpath>
+					
 				<arg value="SmokeTest"/>
 			</java>
 		</target>

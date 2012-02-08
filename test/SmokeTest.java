@@ -2,7 +2,6 @@ import com.thoughtworks.selenium.*;
 import org.junit.*;
 import com.testingbot.*;
 
-
 public class SmokeTest extends TestingBotTestCase {
   public void setUp() throws Exception {
     TestingBotSelenium selenium = new TestingBotSelenium(

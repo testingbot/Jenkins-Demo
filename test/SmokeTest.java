@@ -11,7 +11,7 @@ public class SmokeTest extends TestingBotTestCase {
             "http://www.google.com/");
 
 	    this.selenium = selenium;
-    selenium.start("version=9;platform=WINDOWS;screenshot=false");
+    selenium.start("version=10;platform=WINDOWS;screenshot=false");
   }
   public void testGoogle() throws Exception {
     this.selenium.open("/");

@@ -29,7 +29,9 @@
     <junit>
       <classpath refid="classpath.test" />
       <formatter type="brief" usefile="false" />
-      <test name="SmokeTest" />
+       <test name="SmokeTest" todir="test-reports">
+            <formatter type="xml"/>
+        </test>
     </junit>
   </target>
 

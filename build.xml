@@ -1,49 +1,38 @@
-<?xml version="1.0"?>
-<project name="Jenkins Demo" default="run">
-    <target name="package">
-        <jar destfile="jenkins-demo.jar">
-            <fileset dir="build"/>
-            <manifest>
-                <attribute name="Main-Class"
-                    value="JenkinsDemo"/>
-            </manifest>
-        </jar>
-    </target>
-    <target name="serve" depends="package">
-        <java jar="jenkins-demo.jar" fork="true" spawn="true"/>
-    </target>
+<project default="all">
+  <property name="tst-dir" location="test" />
+  <property name="TALK" value="true" />
 
-		<target name="test" depends="junit">
-			<java classpath="lib" fork="true" classname="com.testingbot.TestingBotTestRunner">
-				
-					<classpath>
-					      <path location="lib/TestingBot-0.0.1.jar"/>
-					      <path location="lib/junit-4.10.jar"/>
-	              <path location="lib/selenium-java-client-driver.jar"/>
-	              <path location="test"/>
-					    </classpath>
-					
-				<arg value="SmokeTest"/>
-			</java>
-		</target>
-
-    <target name="junit" depends="serve">
-				
-        <javac srcdir="test" destdir="test">
-					<classpath path="lib/TestingBot-0.0.1.jar"/>
-          <classpath path="lib/selenium-java-client-driver.jar"/>
-          <classpath path="lib/junit-4.10.jar"/>
-        </javac>
-        <junit>
-            <classpath>
-					  	<pathelement path="lib/TestingBot-0.0.1.jar"/>
+  <path id="classpath.base">
+  </path>
+  <path id="classpath.test">
               <pathelement location="lib/junit-4.10.jar"/>
-              <pathelement path="lib/selenium-java-client-driver.jar"/>
+              <pathelement path="lib/selenium-server-standalone-2.47.1.jar"/>
               <pathelement path="test"/>
-            </classpath>
-            <test name="SmokeTest" todir="test-reports">
-                <formatter type="xml"/>
-            </test>
-        </junit>
-    </target>
+    <pathelement location="${tst-dir}" />
+    <path refid="classpath.base" />
+  </path>
+
+  <target name="compile-test">
+    <javac srcdir="${tst-dir}"
+           verbose="${TALK}"
+           >
+      <classpath refid="classpath.test"/>
+    </javac>
+  </target>
+  <target name="clean-compile-test">
+    <delete verbose="${TALK}">
+      <fileset dir="${tst-dir}" includes="**/*.class" />
+    </delete>
+  </target>
+
+  <target name="test" depends="compile-test">
+    <junit>
+      <classpath refid="classpath.test" />
+      <formatter type="brief" usefile="false" />
+      <test name="SmokeTest" />
+    </junit>
+  </target>
+
+  <target name="all" depends="test" />
+  <target name="clean" depends="clean-compile-test" />
 </project>

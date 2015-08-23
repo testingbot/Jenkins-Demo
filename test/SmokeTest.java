@@ -1,28 +1,60 @@
-import com.thoughtworks.selenium.*;
-import org.junit.*;
-import com.testingbot.*;
+import junit.framework.*;
 
-public class SmokeTest extends TestingBotTestCase {
-  public void setUp() throws Exception {
-    TestingBotSelenium selenium = new TestingBotSelenium(
-            "hub.testingbot.com",
-            4444,
-            "firefox",
-            "http://www.google.com/");
+import org.openqa.selenium.By;  
+import org.openqa.selenium.Platform;  
+import org.openqa.selenium.WebDriver;  
+import org.openqa.selenium.WebElement;  
+import org.openqa.selenium.remote.DesiredCapabilities;  
+import org.openqa.selenium.remote.RemoteWebDriver;  
 
-    this.selenium = selenium;
-    selenium.start("version=10;platform=WINDOWS;screenshot=false");
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+
+import java.net.URL;  
+  
+public class SmokeTest  extends TestCase {
+  
+  public static void testOne() {  
+    String apiKey = null;
+    String apiSecret = null;
+
+    try {
+         FileInputStream fstream = new FileInputStream(System.getProperty("user.home") + "/.testingbot");
+         // Get the object of DataInputStream
+         DataInputStream in = new DataInputStream(fstream);
+         BufferedReader br = new BufferedReader(new InputStreamReader(in));
+         String strLine = br.readLine();
+         String[] data = strLine.split(":");
+         apiKey = data[0];
+         apiSecret = data[1];
+       } catch (Exception e) { return; }
+      
+      if ((apiKey == null) || (apiSecret == null)) {
+          return;
+      }
+
+    DesiredCapabilities caps = new DesiredCapabilities();  
+    caps.setCapability("browserName", "IE");  
+    caps.setCapability("version", "9");  
+    caps.setCapability("platform", "WINDOWS");  
+  
+    try {
+      WebDriver driver = new RemoteWebDriver(new URL("http://" + apiKey + ":" + apiSecret + "@hub.testingbot.com/wd/hub"), caps);  
+      driver.get("http://www.google.com/ncr");  
+      WebElement element = driver.findElement(By.name("q"));  
     
-    // print sessionID in output so that our Jenkins plugin maps the sessionID to videos/screenshots
-    System.out.println("TestingBotSessionID=" + this.selenium.getEval("selenium.sessionId"));
-  }
-
-  public void testGoogle() throws Exception {
-    this.selenium.open("/");
-    assertEquals("Google", this.selenium.getTitle());
-  }
-
-  public void tearDown() throws Exception {
-    this.selenium.stop();
-  }
-}
+      element.sendKeys("TestingBot");  
+      element.submit();  
+    
+      System.out.println("TestingBotSessionID=" + ((RemoteWebDriver) driver).getSessionId().toString());  
+      driver.quit();
+    }
+    catch (Exception ex) {
+        System.out.println(ex.getMessage());
+    }
+  }  
+} 

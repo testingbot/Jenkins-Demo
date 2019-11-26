@@ -18,15 +18,21 @@ import java.net.URL;
   
 public class SmokeTest  extends TestCase {
   
-  public static void testOne() {  
+  public static void testOne() {
+    String build = System.getenv("bamboo_TB_BAMBOO_BUILDNUMBER");
     DesiredCapabilities caps = new DesiredCapabilities();  
     caps.setCapability("browserName", "IE");  
     caps.setCapability("version", "9");  
     caps.setCapability("platform", "WINDOWS");  
-    caps.setCapability("build", System.getenv("TB_BAMBOO_BUILDNUMBER"));
+    caps.setCapability("build", build);
     String apiKey = System.getenv("TESTINGBOT_KEY");
     String apiSecret = System.getenv("TESTINGBOT_SECRET");
-  
+    if (apiKey == null) {
+	apiKey = System.getenv("bamboo_TESTINGBOT_KEY");
+    }
+    if (apiSecret == null) {
+        apiSecret = System.getenv("bamboo_TESTINGBOT_SECRET");
+    }
     try {
       WebDriver driver = new RemoteWebDriver(new URL("http://" + apiKey + ":" + apiSecret + "@hub.testingbot.com/wd/hub"), caps);  
       driver.get("http://www.google.com/ncr");  

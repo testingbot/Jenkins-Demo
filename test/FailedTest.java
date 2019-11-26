@@ -19,28 +19,13 @@ import java.net.URL;
 public class FailedTest extends TestCase {
   
   public static void testOne() {  
-    String apiKey = null;
-    String apiSecret = null;
-
-    try {
-         FileInputStream fstream = new FileInputStream(System.getProperty("user.home") + "/.testingbot");
-         // Get the object of DataInputStream
-         DataInputStream in = new DataInputStream(fstream);
-         BufferedReader br = new BufferedReader(new InputStreamReader(in));
-         String strLine = br.readLine();
-         String[] data = strLine.split(":");
-         apiKey = data[0];
-         apiSecret = data[1];
-       } catch (Exception e) { return; }
-      
-      if ((apiKey == null) || (apiSecret == null)) {
-          return;
-      }
-
     DesiredCapabilities caps = new DesiredCapabilities();  
     caps.setCapability("browserName", "IE");  
     caps.setCapability("version", "9");  
     caps.setCapability("platform", "WINDOWS");  
+    caps.setCapability("build", System.getenv("TB_BAMBOO_BUILDNUMBER"));
+    String apiKey = System.getenv("TESTINGBOT_KEY");
+    String apiSecret = System.getenv("TESTINGBOT_SECRET");
   
     try {
       WebDriver driver = new RemoteWebDriver(new URL("http://" + apiKey + ":" + apiSecret + "@hub.testingbot.com/wd/hub"), caps);  

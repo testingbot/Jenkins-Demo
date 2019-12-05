@@ -20,6 +20,9 @@ public class FailedTest extends TestCase {
   
   public static void testOne() {  
     String build = System.getenv("bamboo_TB_BAMBOO_BUILDNUMBER");
+    if (System.getenv("TB_BUILD_NAME") != null) {
+        build = System.getenv("TB_BUILD_NAME");
+    }
     DesiredCapabilities caps = new DesiredCapabilities();
     caps.setCapability("browserName", "IE");
     caps.setCapability("version", "9");

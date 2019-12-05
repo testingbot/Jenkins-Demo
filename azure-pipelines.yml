@@ -10,6 +10,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: TBMain@0
+  inputs:
+    connectedServiceName: 'credentials'
 - task: Ant@1
   inputs:
     workingDirectory: ''

@@ -12,7 +12,7 @@ pool:
 steps:
 - task: TBMain@0
   inputs:
-    connectedServiceName: 'credentials'
+    connectedServiceName: 'testingbot1'
 - task: Ant@1
   inputs:
     workingDirectory: ''

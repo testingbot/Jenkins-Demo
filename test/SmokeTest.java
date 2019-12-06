@@ -19,6 +19,10 @@ import java.net.URL;
 public class SmokeTest  extends TestCase {
   
   public static void testOne() {
+Map<String, String> env = System.getenv();
+for (String envName : env.keySet()) {
+    System.out.format("%s=%s%n", envName, env.get(envName));
+}
     String build = System.getenv("bamboo_TB_BAMBOO_BUILDNUMBER");
     if (System.getenv("TB_BUILD_NAME") != null) {
 	build = System.getenv("TB_BUILD_NAME");

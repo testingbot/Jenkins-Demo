@@ -13,6 +13,7 @@ steps:
 - task: TBMain@0
   inputs:
     connectedServiceName: 'testingbot2'
+    tbTunnel: true
 - task: Ant@1
   inputs:
     workingDirectory: ''
